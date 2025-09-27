@@ -16,10 +16,10 @@
 # include <readline/history.h>
 
 // Librería personal
-# include "libft/libft.h"
+# include "Libft/libft.h"
 
 // Enum para los diferentes tipos de tokens que el Lexer reconocerá
-typedef enum e-tokentype
+typedef enum e_tokentype
 {
 	TOKEN_WORD,				// Palabra (comando, arg, etc)
 	TOKEN_PIPE,				// |
@@ -27,8 +27,16 @@ typedef enum e-tokentype
 	TOKEN_REDIR_OUT,		// >
 	TOKEN_REDIR_APPEND,		// >>
 	TOKEN_HEREDOC			// <<
-	t_tokentype;
-}
+}	t_tokentype;
+
+// Enum para los estados del autómata del lexer
+typedef enum e_state
+{
+	STATE_GENERAL,		// estado por defecto, entre tokens
+	STATE_IN_WORD,		// dentro de una palabra
+	STATE_IN_DQUOTE,	// dentro de comilla doble ""
+	STATE_IN_SQUOTE		// dentro de comillas simples ''
+}	t_state;
 
 // Estructura para un solo token generado por el lexer
 typedef struct s_token
@@ -74,4 +82,4 @@ typedef struct s_simple_cmd
 
 /* --- UTILS ---*/
 
-#endif
+# endif
