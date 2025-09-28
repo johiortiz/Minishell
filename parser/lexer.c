@@ -6,7 +6,7 @@
 /*   By: johyorti <johyorti@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/26 17:06:58 by johyorti          #+#    #+#             */
-/*   Updated: 2025/09/28 00:51:21 by johyorti         ###   ########.fr       */
+/*   Updated: 2025/09/28 11:45:43 by johyorti         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,6 @@ t_list	*lexer(char *line)
 	t_state		state;			// memoria del estado del autómata. Guarda el "modo" actual para saber qué reglas aplicar.
 	int			i;				// contador para recorrer el string
 	int			token_start;	// marca de inicio, cuando empieza a leer una palabra guarda la posicion de i aqui para saber dónde empezó
-
 
 	tokens = NULL;				// Empieza en NULL porque la lista está vacía al principio
 	state = STATE_GENERAL;		// Empieza como STATE_GENERAL porque es nuestro punto de partida por defecto.
@@ -51,9 +50,9 @@ t_list	*lexer(char *line)
 			}
 			else if (line[i] == '>')
 			{
-				if (line[i + 1] == '<')
+				if (line[i + 1] == '>')
 				{
-					create_and_add_token(&tokens, "<<", TOKEN_HEREDOC);
+					create_and_add_token(&tokens, ">>", TOKEN_HEREDOC);
 					i++;
 				}
 				else
@@ -80,13 +79,35 @@ t_list	*lexer(char *line)
 		else if (state == STATE_IN_WORD)
 		{
 			// ... lógica para este estado
+			// Preguntamos: ¿Es el carácter actual un "un carácter de fin"?
 			if (ft_isspace(line[i] || line[i] == '|' || line[i] == '<' || \
 				line[i] == '>' || line[i] == '"' || line[i] == '\''))
 				{
-					
+					// 1. La palabra ha terminado, así que creamos el token.
+					add_word_token(&tokens, line, token_start, i);
+					// 2. Volvemos al estado general para rpocesar el carácter
+					state = STATE_GENERAL;
+					// 3. Retrocedemos para que el bucle vuelva a ver este mismo
+					// carácter, pero ahora en el estado GENERAL.
+					i--;
 				}
 		}
-		// ... etc. para los otros estados
+		else if (state == STATE_IN_DQUOTE)
+		{
+			// Si encontramos la comilla dobre de cierre
+			{
+				if (line[i] == '"')
+				{
+					// 1. Creamos el token con el contenido de dentro de las comillas.
+					// se usa la funcion de "cortar" substrings
+					add_word_token(&tokens, line, token_start, i);
+					// 2. Volvemos al estado general, listos para lo que venga después.
+					state = STATE_GENERAL;
+				}
+				// Si no es comilla de cierre, no hacemos NADA.
+				// El bucle principal simplemnente avanzara 'i' y seguiremos en este estado.
+			}
+		}
 		i++;
 	}
 	return (tokens);

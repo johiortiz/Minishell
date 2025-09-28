@@ -6,7 +6,7 @@
 /*   By: johyorti <johyorti@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/28 00:23:05 by johyorti          #+#    #+#             */
-/*   Updated: 2025/09/28 00:29:24 by johyorti         ###   ########.fr       */
+/*   Updated: 2025/09/28 11:26:38 by johyorti         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,5 +27,29 @@ void	create_and_add_token(t_list **tokens, char *value, t_tokentype type)
 	new_token->value = ft_strdup(value);
 	new_token->type = type;
 	// 3. Añadimos el nuevo token al final de la lista.
+	ft_lstadd_back(tokens, ft_lstnew(new_token));
+}
+
+// Esta función recibe el input, un inicio y un fin.
+void	add_word_token(t_list **tokens, const char *input, int start, int end)
+{
+	char		*value;
+	t_token		*new_token;
+
+	// 1, "Cortamos" el string del input para crear el valor del token.
+	value = ft_substr(input, start, end - start);
+	if (!value)
+		return ;
+	// 2. Creamos la estructura del token.
+	new_token = malloc(sizeof(t_token));
+	if (!new_token)
+	{
+		free(value);
+		return ;
+	}
+	// 3. Asignamos el valor y, por ahora, el tipo por defecto WORD.
+	new_token->value = value;
+	new_token->type = TOKEN_WORD;
+	// 4. Añadimos el nuevo token a la lista.
 	ft_lstadd_back(tokens, ft_lstnew(new_token));
 }

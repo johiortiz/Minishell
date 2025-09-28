@@ -6,11 +6,11 @@
 /*   By: johyorti <johyorti@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/26 14:54:36 by johyorti          #+#    #+#             */
-/*   Updated: 2025/09/26 15:05:53 by johyorti         ###   ########.fr       */
+/*   Updated: 2025/09/28 11:31:04 by johyorti         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "minishel.h"
+#include "minishell.h"
 
 int	main(void)
 {

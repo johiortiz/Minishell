@@ -66,6 +66,7 @@ typedef struct s_simple_cmd
 /* --- PARSER ---*/
 t_list	*lexer(char *line);
 void	create_and_add_token(t_list **tokens, char *value, t_tokentype type);
+void	add_word_token(t_list **tokens, const char *input, int start, int end);
 
 
 /* --- EXPANDER ---*/
